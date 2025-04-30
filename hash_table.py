@@ -22,6 +22,27 @@ class hash_table:
         key_item = [key, package]
         allbuckets.append(key_item)
         return True
+#hash search function
+    def hash_search(self, key):
+        bucket = hash(key) % len(self.table)
+        allbuckets = self.table[bucket]
+
+        for keys in allbuckets:
+            if keys[0] == key:
+                return keys[1]
+        return None
+#remove from hash table
+    def hash_remove(self, key):
+        bucket = hash(key) % len(self.table)
+        allbuckets = self.table[bucket]
+
+        if key in allbuckets:
+            allbuckets.remove(key)
+
+    #check later if this needs to return none, idt it does
+
+
+
 
 
 
