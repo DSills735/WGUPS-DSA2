@@ -1,6 +1,3 @@
-class Truck:
-
-
 
 class main:
 
