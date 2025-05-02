@@ -1,5 +1,6 @@
 class truck:
-    def truck(self, speed, capacity, load, packages, mileage, address, departure):
+
+    def __init__(self, speed, capacity, load, packages, mileage, address, departure):
         self.speed = speed
         self.capacity = capacity
         self.load = load
@@ -12,3 +13,5 @@ class truck:
     def __str__(self):
         return "%s, %s, %s, %s, %s, %s, %s" % (self.speed, self.capacity,
                                                self.load, self.packages, self.mileage, self.address, self.departure)
+
+    #def truck(self, speed, capacity, load, packages, mileage, address, departure):
