@@ -36,3 +36,6 @@ class packages:
                 self.zip = '84111'
 
 
+    def __str__(self):
+        return "%s, %s, %s, %s, %s, %s, %s, %s, %s" % (self.ID, self.street, self.city,
+                                                       self.state, self.zip, self.weight, self.instructions, self.status)
