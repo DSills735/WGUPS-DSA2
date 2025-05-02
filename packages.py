@@ -4,7 +4,7 @@ from hash_table import hash_table
 #packages class for requirement B
 class packages:
     def __init__(self, ID, street, city, state, zip, due, weight, instructions, status,
-                 out_for_delivery, time_of_delivery):
+                 out_for_delivery = None, time_of_delivery = None):
         self.packages = packages
         self.ID = ID
         self.street = street
@@ -37,5 +37,5 @@ class packages:
 
 
     def __str__(self):
-        return "%s, %s, %s, %s, %s, %s, %s, %s, %s" % (self.ID, self.street, self.city,
+        return "%s, %s, %s, %s, %s, %s, %s, %s" % (self.ID, self.street, self.city,
                                                        self.state, self.zip, self.weight, self.instructions, self.status)

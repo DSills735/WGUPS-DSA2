@@ -12,15 +12,15 @@ class hash_table:
 #hash insert function
     def table_add(self, key, package):
         bucket = hash(key) % len(self.table)
-        self.table[bucket].append(package)
+        #self.table[bucket].append(package)
         allbuckets = self.table[bucket]
 
         for keys in allbuckets:
             if keys[0] == key:
-                keys[1] == package
+                keys[1] = package
                 return True
-        key_item = [key, package]
-        allbuckets.append(key_item)
+        #key_item = [key, package]
+        allbuckets.append([key, package])
         return True
 #hash search function
     def hash_search(self, key):
