@@ -85,15 +85,15 @@ def delivery(truck):
         next_delivery_dist = 10000
         next_package = None
         for package in packages_on_truck:
-            if distances(delivery_address(truck.address), delivery_address(package.address)) <= next_delivery_dist:
-                next_delivery_dist = distances(delivery_address(truck.address), delivery_address(package.address))
+            if distances(delivery_address(truck.address), delivery_address(package.street)) <= next_delivery_dist:
+                next_delivery_dist = distances(delivery_address(truck.address), delivery_address(package.street))
                 next_package = package
 
         truck.packages.append(next_package.ID)
         distance_travelled += next_delivery_dist
         truck.time += datetime.timedelta(hours=next_address / 18)
         packages_on_truck.remove(next_package)
-        truck.address = next_package.address
+        truck.address = next_package.street
         next_package.delivery = truck.time
         next_package.departure = truck.time
 

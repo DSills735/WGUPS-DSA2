@@ -5,7 +5,6 @@ from hash_table import hash_table
 class packages:
     def __init__(self, ID, street, city, state, zip, due, weight, instructions, status,
                  out_for_delivery = None, time_of_delivery = None):
-        self.packages = packages
         self.ID = ID
         self.street = street
         self.city = city
@@ -15,18 +14,18 @@ class packages:
         self.weight = weight
         self.instructions = instructions
         self.status = status
-        self.out_for_delivery = None
-        self.time_of_delivery = None
+        self.out_for_delivery = out_for_delivery
+        self.time_of_delivery = time_of_delivery
 
     #update the status of packages as needed for the UI
 
     def status_change(self, time):
         if time < self.out_for_delivery:
-            status = 'At the hub.'
+            self.status = 'At the hub.'
         elif time > self.out_for_delivery and time < self.time_of_delivery:
-            status = 'Enroute to delivery address.'
+            self.status = 'Enroute to delivery address.'
         elif time > self.time_of_delivery:
-            status = 'Delivered.'
+            self.status = 'Delivered.'
 
 #Package 9 has the incorrect address per instruction.
         #This will correct it when the info arrives at WGUPS at 10:20 AM.
