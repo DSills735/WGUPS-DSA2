@@ -9,6 +9,7 @@ class hash_table:
         for i in range(package_capacity):
             self.table.append([])
 
+
 #hash insert function
     def table_add(self, key, package):
         bucket = hash(key) % len(self.table)
@@ -19,8 +20,9 @@ class hash_table:
             if keys[0] == key:
                 keys[1] = package
                 return True
-        #key_item = [key, package]
-        allbuckets.append([key, package])
+        key_item = [key, package]
+        allbuckets.append(key_item)
+
         return True
 #hash search function
     def hash_search(self, key):

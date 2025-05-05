@@ -29,7 +29,7 @@ def parcel_information(file):
         parcel_info = csv.reader(parcel_info)
         next(parcel_info)
         for parcel in parcel_info:
-            packID = parcel[0]
+            packID = int(parcel[0])
             packAddress = parcel[1]
             packCity = parcel[2]
             packState = parcel[3]
@@ -40,6 +40,7 @@ def parcel_information(file):
             packStatus = 'At hub'
 
             parcel = packages(packID, packAddress, packCity, packState, packZip, packDeadline, packWeight, packNotes, packStatus)
+            #print(packID, parcel)
             packages_hash_table.table_add(packID, parcel)
 
             #test below delete or comment before submitting
@@ -55,11 +56,18 @@ def distances(x, y):
 #distance to find next address
 def delivery_address(address_to_find):
     for row in delivery_addresses_csv:
-        if address_to_find == row[2]:
+        if address_to_find.strip().lower() == row[2].strip().lower():
             return int(row[0])
+    return None
+
 
 
 parcel_information("package.csv")
+print("Hash table contents:")
+for bucket in packages_hash_table.table:
+    if bucket:
+        for entry in bucket:
+            print(f"ID: {entry[0]}, Address: {entry[1].street}")
 
 #load the trucks with the packages and set their time to go out for delivery. I chose to manually load the trucks
 #packages loaded: 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40 ALL LOADED
@@ -91,18 +99,19 @@ def delivery(truck):
 
         truck.packages.append(next_package.ID)
         distance_travelled += next_delivery_dist
-        truck.time += datetime.timedelta(hours=next_address / 18)
+        truck.departure += datetime.timedelta(hours=next_delivery_dist / 18)
         packages_on_truck.remove(next_package)
         truck.address = next_package.street
-        next_package.delivery = truck.time
-        next_package.departure = truck.time
+        next_package.delivery = truck.departure
+        next_package.departure = truck.departure
 
-
+truck_1_completed = truck1.departure
+truck_2_completed = truck2.departure
 
 delivery(truck1)
 delivery(truck2)
 
-truck3.departure = min(truck1.time, truck2.time)
+truck3.departure = min(truck1.departure, truck2.departure)
 delivery(truck3)
 
 print(truck1.mileage)
