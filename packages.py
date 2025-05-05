@@ -3,8 +3,7 @@ from hash_table import hash_table
 
 #packages class for requirement B
 class packages:
-    def __init__(self, ID, street, city, state, zipcode, due, weight, instructions, status,
-                 out_for_delivery = None, time_of_delivery = None):
+    def __init__(self, ID, street, city, state, zipcode, due, weight, instructions, status, out_for_delivery, time_of_delivery):
         self.ID = ID
         self.street = street
         self.city = city
@@ -14,18 +13,16 @@ class packages:
         self.weight = weight
         self.instructions = instructions
         self.status = status
-        self.out_for_delivery = out_for_delivery
-        self.time_of_delivery = time_of_delivery
+        self.out_for_delivery = None
+        self.time_of_delivery = None
 
     #update the status of packages as needed for the UI
 
     def status_change(self, time):
 
-
-
-        if time < self.out_for_delivery:
+        if time < self.out_for_delivery or self.out_for_delivery == None:
             self.status = 'At the hub.'
-        elif time > self.out_for_delivery and time < self.time_of_delivery:
+        elif self.out_for_delivery < time < self.time_of_delivery:
             self.status = 'Enroute to delivery address.'
         elif time > self.time_of_delivery:
             self.status = 'Delivered.'
