@@ -11,7 +11,7 @@ from hash_table import hash_table
 #read the CSV files
 
 with open("distances.csv") as csvfile:
-    distance_csv = csv.reader(csvfile)
+    distance_csv = csv.reader(csvfile, delimiter=',')
     distance_csv = list(distance_csv)
 
 with open("delivery_addresses.csv") as csvfile:
@@ -54,10 +54,10 @@ def distances(x, y):
 #distance to find next address
 def delivery_address(address_to_find):
     for row in delivery_addresses_csv:
-        if address_to_find in row[2]:
+        if address_to_find.strip().lower() in row[2].strip().lower():
             return int(row[0])
 
-#Is the hash table populating? Yes
+#Is the hash table populating test code. Current is Yes populating
 #for bucket in packages_hash_table.table:
  #   if bucket:
   #      for entry in bucket:
@@ -94,27 +94,29 @@ def delivery(truck):
                 #print(package.street)
 
             truck.packages.append(next_package.ID)
+            truck.address = package.street
+            print('ID = ' , next_package.ID)
             packages_on_truck.remove(next_package)
             distance_travelled += next_delivery_dist
             print(distance_travelled)
-            truck.departure += datetime.timedelta(hours=next_delivery_dist / 18)
-            truck.address = next_package.street
-            next_package.delivery = truck.departure
-            next_package.departure = truck.departure
+            #truck.departure += datetime.timedelta(hours=next_delivery_dist / 18)
+            #next_package.delivery = truck.departure
+            #next_package.departure = truck.departure
+    truck.mileage = distance_travelled
+#truck_1_completed = truck1.departure
+#truck_2_completed = truck2.departure
 
-truck_1_completed = truck1.departure
-truck_2_completed = truck2.departure
 
-#Package at ID #1 is populating as none.... why?
 delivery(truck1)
+#Truck 2 all packages working like they should be.
 delivery(truck2)
 
-truck3.departure = min(truck1.departure, truck2.departure)
+#truck3.departure = min(truck1.departure, truck2.departure)
 delivery(truck3)
 
-print(truck1.mileage)
-print(truck2.mileage)
-print(truck3.mileage)
-
+print('Truck 1:', truck1.mileage)
+print('Truck 2:', truck2.mileage)
+print('Truck 3', truck3.mileage)
+print('Total:', truck3.mileage + truck2.mileage + truck1.mileage)
 
 #class main
