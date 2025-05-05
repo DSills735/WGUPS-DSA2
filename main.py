@@ -94,6 +94,8 @@ def delivery(truck):
             next_package = package
             next_package.out_for_delivery = truck.current_time
 
+
+
             if distances(delivery_address(truck.address), delivery_address(package.street)) <= next_delivery_dist:
                 next_delivery_dist = distances(delivery_address(truck.address), delivery_address(package.street))
                 next_package = package
@@ -102,7 +104,11 @@ def delivery(truck):
             truck.address = package.street
             #print('ID = ' , next_package.ID)
             truck.current_time += datetime.timedelta(hours=next_delivery_dist / 18)
+
             next_package.time_of_delivery = truck.current_time
+
+
+
             packages_on_truck.remove(next_package)
             distance_travelled += next_delivery_dist
 
@@ -112,7 +118,7 @@ def delivery(truck):
 truck_1_completed = truck1.current_time
 truck_2_completed = truck2.current_time
 
-
+total_miles = truck1.mileage + truck2.mileage + truck3.mileage
 delivery(truck1)
 #Truck 2 all packages working like they should be.
 delivery(truck2)
@@ -139,19 +145,26 @@ class main:
     print('Choose an option below to begin:')
     print('--------------------------------------------------------------------')
     print('1: Track a single package using the ID Number')
-    print('2: Track the status of all packages at 9:00 AM')
-    print('3: Track the status of all packages at 10:00 AM')
-    print('4: Track the status of all packages at 12:30 PM')
-    print('5: Track the total mileage of all delivery apparatus for the day')
+    print('2: Track the status of all packages at a given time')
+    print('3: Track the total mileage of all delivery apparatus for the day')
+    print('Any other key to quit')
     if input() == '1':
         id_to_track = int(input('Enter the ID Number you wish to track: '))
         time = input('Enter the current time(HH:MM): ')
+        #time conversion and package status update.
         hour, minute = time.split(':')
         timeinput = datetime.timedelta(hours = int(hour), minutes = int(minute))
         package = packages_hash_table.hash_search(id_to_track)
-        for i, truck in enumerate(all_trucks, start=0):
+        package.status_change(timeinput)
+
+        for i, truck in enumerate(all_trucks, start=1):
             if id_to_track in truck.packages:
-                print(f'This package is assigned Truck #{i}, and its status is {package.status_change(timeinput)}')
+                print(f'This package is assigned Truck #{i}, and its status is {package.status}')
+
+    if input() == '2':
+        pass
+    if input() == '3':
+        print(f'The total miles travelled by our units today is: {total_miles}.')
 
 
     #print('Package with ID: {id_to_track} status: {status}')

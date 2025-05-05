@@ -21,11 +21,11 @@ class packages:
     def status_change(self, time):
 
         if time < self.out_for_delivery or self.out_for_delivery == None:
-            self.status = 'At the hub.'
+            self.status = 'at the hub.'
         elif self.out_for_delivery < time < self.time_of_delivery:
-            self.status = 'Enroute to delivery address.'
+            self.status = 'enroute to delivery address. Will be delivered soon!'
         elif time > self.time_of_delivery:
-            self.status = 'Delivered.'
+            self.status = 'delivered!'
         # Package 9 has the incorrect address per instruction.
         # This will correct it when the info arrives at WGUPS at 10:20 AM.
         if self.ID == 9:
