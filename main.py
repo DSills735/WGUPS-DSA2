@@ -79,41 +79,39 @@ def delivery(truck):
         package = packages_hash_table.hash_search(packageID)
         #print(package)
         packages_on_truck.append(package)
-       #print(truck.packages)
-        #print(packages_on_truck)
     truck.packages.clear()
     #print(truck.packages)
     while len(packages_on_truck) > 0:
 
         next_delivery_dist = 10000
+
         for package in packages_on_truck:
             #print(truck.address, package)
             next_package = package
             if distances(delivery_address(truck.address), delivery_address(package.street)) <= next_delivery_dist:
                 next_delivery_dist = distances(delivery_address(truck.address), delivery_address(package.street))
-                #print(package.street)
-
+                next_package = package
+        if next_package:
             truck.packages.append(next_package.ID)
             truck.address = package.street
             print('ID = ' , next_package.ID)
             packages_on_truck.remove(next_package)
             distance_travelled += next_delivery_dist
             print(distance_travelled)
-            #truck.departure += datetime.timedelta(hours=next_delivery_dist / 18)
-            #next_package.delivery = truck.departure
-            #next_package.departure = truck.departure
+            truck.departure += datetime.timedelta(hours=next_delivery_dist / 18)
+
     truck.mileage = distance_travelled
-#truck_1_completed = truck1.departure
-#truck_2_completed = truck2.departure
+truck_1_completed = truck1.departure
+truck_2_completed = truck2.departure
 
 
 delivery(truck1)
 #Truck 2 all packages working like they should be.
 delivery(truck2)
 
-#truck3.departure = min(truck1.departure, truck2.departure)
+truck3.departure = min(truck1.departure, truck2.departure)
 delivery(truck3)
-
+#Should be ~105.39 Miles travelled. Requirement for this is 140
 print('Truck 1:', truck1.mileage)
 print('Truck 2:', truck2.mileage)
 print('Truck 3', truck3.mileage)

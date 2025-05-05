@@ -20,12 +20,8 @@ class packages:
     #update the status of packages as needed for the UI
 
     def status_change(self, time):
-        # Package 9 has the incorrect address per instruction.
-        # This will correct it when the info arrives at WGUPS at 10:20 AM.
-        if self.ID == 9:
-            if time > datetime.timedelta(hours=10, minutes=20):
-                self.street = '410 S State St'
-                self.zipcode = '84111'
+
+
 
         if time < self.out_for_delivery:
             self.status = 'At the hub.'
@@ -33,8 +29,12 @@ class packages:
             self.status = 'Enroute to delivery address.'
         elif time > self.time_of_delivery:
             self.status = 'Delivered.'
-
-
+        # Package 9 has the incorrect address per instruction.
+        # This will correct it when the info arrives at WGUPS at 10:20 AM.
+        if self.ID == 9:
+            if time > datetime.timedelta(hours=10, minutes=20):
+                self.street = '410 S State St'
+                self.zipcode = '84111'
 
 
     def __str__(self):
