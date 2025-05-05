@@ -25,7 +25,7 @@ class packages:
         if self.ID == 9:
             if time > datetime.timedelta(hours=10, minutes=20):
                 self.street = '410 S State St'
-                self.zip = '84111'
+                self.zipcode = '84111'
 
         if time < self.out_for_delivery:
             self.status = 'At the hub.'

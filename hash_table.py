@@ -32,7 +32,7 @@ class hash_table:
         for keys in allbuckets:
             if keys[0] == key:
                 return keys[1]
-        return None
+
 #remove from hash table
     def hash_remove(self, key):
         bucket = hash(key) % len(self.table)
