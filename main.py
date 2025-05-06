@@ -72,7 +72,7 @@ truck2 = truck(18, 16, 0.0, [2, 3, 4, 5, 9, 18, 26, 28, 32, 35, 36, 38], 0.0, '4
 #A few of these packages cannot leave shop until 905.
 truck3 = truck(18, 16, 0.0, [6, 7, 8, 10, 11, 12, 17, 21, 22, 23, 24, 25, 33, 39], 0.0, '4001 South 700 East', datetime.timedelta(hours = 9, minutes = 5), datetime.timedelta(hours = 9, minutes = 5))
 all_trucks = [truck1, truck2, truck3]
-
+#nearest neighbor algorithm for delivery.
 def delivery(truck):
     packages_on_truck = []
     distance_travelled = 0.0
@@ -82,49 +82,52 @@ def delivery(truck):
         #print(package)
         packages_on_truck.append(package)
     truck.packages.clear()
-
+#initializzes current time to adequately keep track of the truck.
     truck.current_time = truck.departure
 
     #print(truck.packages)
     while len(packages_on_truck) > 0:
         next_delivery_dist = 10000
-
+        #iterates over packages on truck to ensure delivery of the closest package.
         for package in packages_on_truck:
             #print(truck.address, package)
             next_package = package
             next_package.out_for_delivery = truck.current_time
 
-
-
             if distances(delivery_address(truck.address), delivery_address(package.street)) <= next_delivery_dist:
                 next_delivery_dist = distances(delivery_address(truck.address), delivery_address(package.street))
                 next_package = package
         if next_package:
+            #if next package is true update the variables for comparison
             truck.packages.append(next_package.ID)
             truck.address = package.street
             #print('ID = ' , next_package.ID)
+            #calculates time by using the avg truck speed
             truck.current_time += datetime.timedelta(hours=next_delivery_dist / 18)
 
             next_package.time_of_delivery = truck.current_time
 
 
-
+            #remove the package and track miles travelled.
             packages_on_truck.remove(next_package)
             distance_travelled += next_delivery_dist
 
 
-
+    #finalize milage for truck object
     truck.mileage = distance_travelled
+#finalizze times for truck object, so the third can leave ASAP.
 truck_1_completed = truck1.current_time
 truck_2_completed = truck2.current_time
 
-total_miles = truck1.mileage + truck2.mileage + truck3.mileage
-delivery(truck1)
-#Truck 2 all packages working like they should be.
-delivery(truck2)
 
+#begin delivery for 3 trucks
+delivery(truck1)
+
+delivery(truck2)
+#once a truck is completed, start the third
 truck3.departure = min(truck1.departure, truck2.departure)
 delivery(truck3)
+
 #Should be ~105.39 Miles travelled. Requirement for this is 140
 #('Truck 1:', truck1.mileage)
 #print('Truck 2:', truck2.mileage)
@@ -147,8 +150,8 @@ class main:
     print('1: Track a single package using the ID Number')
     print('2: Track the status of all packages at a given time')
     print('3: Track the total mileage of all delivery apparatus for the day')
-    print('Any other key to quit')
-    if input() == '1':
+    choice = input('4: Quit\n')
+    if choice == '1':
         id_to_track = int(input('Enter the ID Number you wish to track: '))
         time = input('Enter the current time(HH:MM): ')
         #time conversion and package status update.
@@ -156,16 +159,29 @@ class main:
         timeinput = datetime.timedelta(hours = int(hour), minutes = int(minute))
         package = packages_hash_table.hash_search(id_to_track)
         package.status_change(timeinput)
-
+        #iterate over the truck to find the ID in a specific truck.
         for i, truck in enumerate(all_trucks, start=1):
             if id_to_track in truck.packages:
                 print(f'This package is assigned Truck #{i}, and its status is {package.status}')
 
-    if input() == '2':
-        pass
-    if input() == '3':
-        print(f'The total miles travelled by our units today is: {total_miles}.')
-
+    if choice == '2':
+        #same time conversion as before
+        time = input('Enter the time that you would like to see the status of each package for. (HH:MM): ')
+        hour, minute = time.split(':')
+        timeinput = datetime.timedelta(hours=int(hour), minutes=int(minute))
+#iterate over all packages to show their time and ID.
+        for package in range(1, 41):
+            package = packages_hash_table.hash_search(package)
+            package.status_change(timeinput)
+            print('ID:', str(package.ID) + ': ' + package.status)
+#show the total miles.
+    if choice == '3':
+        print('The total miles travelled by our units today is:', truck1.mileage + truck2.mileage + truck3.mileage)
+        #exit the program.
+    if choice == '4':
+        quit()
 
     #print('Package with ID: {id_to_track} status: {status}')
     #print('Tracking package %s' % package.status)
+#program completed here. Please note I did leave several prints and notes to myself in as well
+#I left those as I felt they also satisfied the requirement for C2
