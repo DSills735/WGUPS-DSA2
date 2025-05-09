@@ -1,5 +1,6 @@
 # David Sills, Student ID Number: 011355522, WGU
 
+
 import csv
 import datetime
 from packages import packages
@@ -106,6 +107,7 @@ def delivery(truck):
             truck.current_time += datetime.timedelta(hours=next_delivery_dist / 18)
 
             next_package.time_of_delivery = truck.current_time
+            #print(next_package.time_of_delivery)
 
 
             #remove the package and track miles travelled.
@@ -162,9 +164,12 @@ class main:
         #iterate over the truck to find the ID in a specific truck.
         for i, truck in enumerate(all_trucks, start=1):
             if id_to_track in truck.packages:
-                print(f'This package is assigned Truck #{i}, and its status is {package.status}')
+                print(f'This package is assigned Truck #{i}, and its status is {package.status}', end = ' ')
+                if package.status == 'delivered!':
+                    print(f'It was delivered at {package.time_of_delivery}')
 
     if choice == '2':
+
         #same time conversion as before
         time = input('Enter the time that you would like to see the status of each package for. (HH:MM): ')
         hour, minute = time.split(':')
@@ -173,7 +178,12 @@ class main:
         for package in range(1, 41):
             package = packages_hash_table.hash_search(package)
             package.status_change(timeinput)
-            print('ID:', str(package.ID) + ': ' + package.status)
+            print('ID:', str(package.ID) + ': ' + package.status, end = ' ')
+            if package.status == 'delivered!':
+                print(f'It was delivered at {package.time_of_delivery}')
+                #print a newline if the package hasnt been delivered
+            else:
+                print()
 #show the total miles.
     if choice == '3':
         print('The total miles travelled by our units today is:', truck1.mileage + truck2.mileage + truck3.mileage)
