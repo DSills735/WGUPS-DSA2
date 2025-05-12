@@ -166,7 +166,13 @@ class main:
             if id_to_track in truck.packages:
                 print(f'This package is assigned Truck #{i}, and its status is {package.status}', end = ' ')
                 if package.status == 'delivered!':
-                    print(f'It was delivered at {package.time_of_delivery}')
+                    print(f'It was delivered at {package.time_of_delivery}', end = ' ')
+                    if package.ID in [1, 13, 14, 15, 16, 19, 20, 27, 29, 30, 31, 34, 37, 40]:
+                        print('on Truck 1.', end=' ')
+                    elif package.ID in [2, 3, 4, 5, 9, 18, 26, 28, 32, 35, 36, 38]:
+                        print('on Truck 2.', end=' ')
+                    elif package.ID in [6, 7, 8, 10, 11, 12, 17, 21, 22, 23, 24, 25, 33, 39]:
+                        print('on Truck 3.', end=' ')
 
     if choice == '2':
 
