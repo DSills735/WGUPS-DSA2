@@ -178,10 +178,22 @@ class main:
         for package in range(1, 41):
             package = packages_hash_table.hash_search(package)
             package.status_change(timeinput)
-            print('ID:', str(package.ID) + ': ' + package.status, end = ' ')
+            print(f'ID: {package.ID}    Status: {package.status}    Address: {package.street}', end = ' ')
+            if package.instructions:
+                print(f'   Special Instructions: {package.instructions}')
+            if package.ID in [1, 13, 14, 15, 16, 19, 20, 27, 29, 30, 31, 34, 37, 40]:
+                print('   Truck: 1', end = ' ')
+            elif package.ID in [2, 3, 4, 5, 9, 18, 26, 28, 32, 35, 36, 38]:
+                print('   Truck: 2', end = ' ')
+            elif package.ID in [6, 7, 8, 10, 11, 12, 17, 21, 22, 23, 24, 25, 33, 39]:
+                print('   Truck: 3', end = ' ')
             if package.status == 'delivered!':
-                print(f'It was delivered at {package.time_of_delivery}')
+                print(f'   Delivery Time: {package.time_of_delivery}', end  = ' ' )
                 #print a newline if the package hasnt been delivered
+            if package.ID in [1, 6, 13, 14, 16, 20, 25, 29, 30, 31, 34, 37, 40]:
+                print('    Deadline: 10:30 AM', end = ' ')
+            if package.ID == 15:
+                print('    Deadline: 09:00 AM', end = ' ')
             else:
                 print()
 #show the total miles.
