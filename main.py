@@ -67,11 +67,11 @@ def delivery_address(address_to_find):
    #         print(f"ID: {entry[0]}, Address: {entry[1].street}")
 
 #load the trucks with the packages and set their time to go out for delivery. I chose to manually load the trucks
-truck1 = truck(18, 16, 0.0, [1, 13, 14, 15, 16, 19, 20, 27, 29, 30, 31, 34, 37, 40], 0.0, '4001 South 700 East', datetime.timedelta(hours = 8), datetime.timedelta(hours = 8))
+truck1 = truck(18, 16, 0.0, [1,  13, 14, 15, 16, 19, 20, 27, 29, 30, 31, 34, 37, 40], 0.0, '4001 South 700 East', datetime.timedelta(hours = 8), datetime.timedelta(hours = 8))
 #packages 3, 18, 37, 38 must be on truck2, package 9 cannot be delivered until 1020 at the earliest d/t wrong delivery address
-truck2 = truck(18, 16, 0.0, [2, 3, 4, 5, 9, 18, 26, 28, 32, 35, 36, 38], 0.0, '4001 South 700 East', datetime.timedelta(hours = 10, minutes = 20), datetime.timedelta(hours = 10, minutes = 20) )
+truck2 = truck(18, 16, 0.0, [2, 3, 4, 5, 9, 18, 26, 28, 32, 35, 36, 38], 0.0, '4001 South 700 East', datetime.timedelta(hours = 9, minutes = 40), datetime.timedelta(hours = 9, minutes = 40) )
 #A few of these packages cannot leave shop until 905.
-truck3 = truck(18, 16, 0.0, [6, 7, 8, 10, 11, 12, 17, 21, 22, 23, 24, 25, 33, 39], 0.0, '4001 South 700 East', datetime.timedelta(hours = 9, minutes = 5), datetime.timedelta(hours = 9, minutes = 5))
+truck3 = truck(18, 16, 0.0, [ 6, 7, 8, 10, 11, 12, 17, 21, 22, 23, 24, 25, 33, 39], 0.0, '4001 South 700 East', datetime.timedelta(hours = 9, minutes = 5), datetime.timedelta(hours = 9, minutes = 5))
 all_trucks = [truck1, truck2, truck3]
 #nearest neighbor algorithm for delivery.
 def delivery(truck):
@@ -85,8 +85,19 @@ def delivery(truck):
     truck.packages.clear()
 #initializzes current time to adequately keep track of the truck.
     truck.current_time = truck.departure
-
     #print(truck.packages)
+    deadline = [6, 25, 28, 32]
+    priority_package = next((p for p in packages_on_truck if p.ID in deadline), None)
+    while priority_package:
+        dist_to_priority = distances(delivery_address(truck.address), delivery_address(priority_package.street))
+        truck.address = priority_package.street
+        truck.current_time += datetime.timedelta(hours=dist_to_priority / 18)
+        priority_package.out_for_delivery = truck.current_time
+        priority_package.time_of_delivery = truck.current_time
+        distance_travelled += dist_to_priority
+        packages_on_truck.remove(priority_package)
+        priority_package = next((p for p in packages_on_truck if p.ID in deadline), None)
+
     while len(packages_on_truck) > 0:
         next_delivery_dist = 10000
         #iterates over packages on truck to ensure delivery of the closest package.
@@ -98,6 +109,7 @@ def delivery(truck):
             if distances(delivery_address(truck.address), delivery_address(package.street)) <= next_delivery_dist:
                 next_delivery_dist = distances(delivery_address(truck.address), delivery_address(package.street))
                 next_package = package
+
         if next_package:
             #if next package is true update the variables for comparison
             truck.packages.append(next_package.ID)
@@ -121,13 +133,13 @@ def delivery(truck):
 truck_1_completed = truck1.current_time
 truck_2_completed = truck2.current_time
 
-
+#print(truck_1_completed)
 #begin delivery for 3 trucks
 delivery(truck1)
 
 delivery(truck2)
 #once a truck is completed, start the third
-truck3.departure = min(truck1.departure, truck2.departure)
+
 delivery(truck3)
 
 #Should be ~105.39 Miles travelled. Requirement for this is 140
