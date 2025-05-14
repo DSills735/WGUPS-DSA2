@@ -1,4 +1,5 @@
 import datetime
+import truck
 from hash_table import hash_table
 
 #packages class for requirement B
@@ -23,7 +24,7 @@ class packages:
         if time < self.out_for_delivery or self.out_for_delivery == None:
             self.status = 'at the hub.'
         elif self.out_for_delivery < time < self.time_of_delivery:
-            self.status = 'enroute to delivery address. Will be delivered soon!'
+            self.status = 'Out for delivery. Will be delivered soon!'
         elif time > self.time_of_delivery:
             self.status = 'delivered!'
         # Package 9 has the incorrect address per instruction.
