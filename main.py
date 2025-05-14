@@ -137,12 +137,13 @@ truck_2_completed = truck2.current_time
 #begin delivery for 3 trucks
 delivery(truck1)
 
+#Starts after truck 1 finishes at 9:39
 delivery(truck2)
-#once a truck is completed, start the third
+
 
 delivery(truck3)
 
-#Should be ~105.39 Miles travelled. Requirement for this is 140
+#Should be ~123.4 Miles travelled. Requirement for this is 140
 #('Truck 1:', truck1.mileage)
 #print('Truck 2:', truck2.mileage)
 #print('Truck 3', truck3.mileage)
