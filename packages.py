@@ -32,6 +32,8 @@ class packages:
             if time > datetime.timedelta(hours=10, minutes=20):
                 self.street = '410 S State St'
                 self.zipcode = '84111'
+        if self.ID in [6, 25, 28, 35] and time < datetime.timedelta(hours = 9, minutes = 5):
+            self.status = 'Package delayed. Will arrive at 9:05 AM.'
 
 
     def __str__(self):
