@@ -1,2 +1,3 @@
 # WGUPS-DSA2
 Final project for WGU Data Structures and algorithms 2 course. 
+This is a routing project for trucks, with a predefined load (set by myself). We were given a list of 40 packages and their locations, all packages with their relative distances to one another, and a handful of specific guidelines regarding each package. We were directed to load the trucks any way we wanted, all packages must be delivered with less than 140 miles travelled. There was no time constraint other than the special instructions on a few packages. Only two trucks are allowed to be out delivering at the same time. My solution used a nearest neighbor algorithm, and a hash table (we were instructed to not use dictionaries, or libraries). 
